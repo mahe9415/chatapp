@@ -13,14 +13,14 @@ const port = process.env.PORT || 3000;
 app.use(express.static(publicPath));
   
 
-io.on('connection',(socket)=>{
+io.on('connection',function(socket){
 	console.log('connected to sever');
 
 	socket.on('disconnect',function(){
 		console.log('user disconnected');
 	})
 	
-	          socket.on('createMsg',(m)=>{
+	          socket.on('createMsg',function{
 					// console.log(m)d
 		          io.emit('newMsg',{
 			            from: m.from,
