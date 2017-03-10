@@ -14,7 +14,24 @@ app.use(express.static(publicPath));
   
 
 io.on('connection',(socket)=>{
-	console.log('run run run');
+	console.log('connected to sever');
+
+	socket.on('disconnect',function(){
+		console.log('user disconnected');
+	})
+
+	socket.on('create',function (obj)
+	{
+		console.log('email',obj);		
+	})
+	socket.emit('send',{
+		'name':"mahe",
+		'email':"adjn@kjsl.vs"
+	})
+
+
+
 })
+
 
 server.listen(port);
