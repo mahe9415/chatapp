@@ -19,17 +19,15 @@ io.on('connection',(socket)=>{
 	socket.on('disconnect',function(){
 		console.log('user disconnected');
 	})
-
-	socket.on('create',function (obj)
+	
+	socket.on('createMsg',(m)=>{
+		console.log(m)
+	})
+	socket.emit('newMsg',
 	{
-		console.log('email',obj);		
+		from:"mahe",
+		text:"hello"
 	})
-	socket.emit('send',{
-		'name':"mahe",
-		'email':"adjn@kjsl.vs"
-	})
-
-
 
 })
 
