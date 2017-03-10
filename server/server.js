@@ -20,16 +20,13 @@ io.on('connection',(socket)=>{
 		console.log('user disconnected');
 	})
 	
-	socket.on('createMsg',(m)=>{
-		console.log(m)
-	})
-	socket.emit('newMsg',
-	{
-		from:"mahe",
-		text:"hello"
-	})
-
-})
+	          socket.on('createMsg',(m)=>{
+					// console.log(m)d
+		          io.emit('newMsg',{
+			            from: m.from,
+			            text: m.text
+		                            })});});
+	                                       
 
 
 server.listen(port);
