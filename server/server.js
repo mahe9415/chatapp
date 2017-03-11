@@ -22,18 +22,43 @@ var generateMsg =(from,text)=>
 io.on('connection',function(socket){
 	console.log('connected to sever');
 
-	socket.on('disconnect',function(){
-		console.log('user disconnected');
-	})
-	
-	          socket.on('createMsg',(msg)=>{
-					 // console.log(msg);
-		          io.emit('newMsg',msg);
+socket.on('disconnect',function()
+{
+	console.log('user disconnected');
+})
 
-		        
+socket.on('createMsg',(msg)=>
+{
+    io.emit('newMsg',msg);
+});
 
-		      });});
-	                                       
+socket.on('shareLocation',function(obj)
+{
+
+	io.emit('newMsg',{ 
+	from:"user",
+	text:"latitude:"+ obj.lat + "longitude:"+ obj.lon+"!"
+})})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+
+
 
 
 server.listen(port);
