@@ -2,11 +2,20 @@
 <html>
 <head>
 	<title>Chat app</title>
+
 </head>
 <body>
 <p>Welcome to chat app</p>
+<ol id="msgstack">
+	
+</ol>
 
+
+<form id="msg-form">
+<input type="text" name="msg" placeholder="Message" />
+<button>send</button>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/index.js"></script>
+<script src="/js/lib/jquery-3.1.1.min.js"></script>
+<script src="/js/index.js"></script>
 </html>
