@@ -17,6 +17,13 @@ var generateMsg =(from,text)=>
 {
 	return {from,text};
 }
+var generateLocationMsg = (from,lat,lon)=>{
+	return {
+		from,
+		url : "https://www.google.com/maps?q="+lat+','+lon,
+		createdAt : new Date().getTime()
+	};
+}
 
 
 io.on('connection',function(socket){
@@ -32,13 +39,13 @@ socket.on('createMsg',(msg)=>
     io.emit('newMsg',msg);
 });
 
-socket.on('shareLocation',function(obj)
+socket.on('shareLocation',(obj)=>
 {
+	var a= generateLocationMsg("user",obj.lat,obj.lon);
+	console.log(a);
 
-	io.emit('newMsg',{ 
-	from:"user",
-	text:"latitude:"+ obj.lat + "longitude:"+ obj.lon+"!"
-})})
+	io.emit('newLocationMsg',generateLocationMsg("user",obj.lat,obj.lon));
+})
 
 
 

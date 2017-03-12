@@ -23,7 +23,7 @@ socket.on('newMsg',function(msg)
 
 		navigator.geolocation.getCurrentPosition(function (position) {
 			socket.emit('shareLocation',{
-				lat:position.coords.latitude,
+				lat : position.coords.latitude,
 				lon : position.coords.longitude
 			})
 		}
@@ -41,3 +41,12 @@ $('#msg-form').on('submit',function(e){
 	})
 })
 
+socket.on('newLocationMsg',function(msg){
+
+	var li =$('<li></li>');
+	var a = $('<a target="_blank">My current location</a>');
+	li.text(msg.from);
+	a.attr('href',msg.url);
+	li.append(a);
+	$('#msgstack').append(li);
+})
