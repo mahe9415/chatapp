@@ -34,9 +34,10 @@ socket.on('disconnect',function()
 	console.log('user disconnected');
 })
 
-socket.on('createMsg',(msg)=>
+socket.on('createMsg',(msg,callback)=>
 {
     io.emit('newMsg',msg);
+    callback()
 });
 
 socket.on('shareLocation',(obj)=>

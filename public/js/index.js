@@ -20,8 +20,9 @@ socket.on('newMsg',function(msg)
 
 	var locationl=$('#sendLocation');
 	locationl.on('click',function(){
-
+		locationl.attr('disabled','disabled').text('sending...')
 		navigator.geolocation.getCurrentPosition(function (position) {
+			locationl.removeAttr('disabled').text('send location');
 			socket.emit('shareLocation',{
 				lat : position.coords.latitude,
 				lon : position.coords.longitude
@@ -34,10 +35,12 @@ socket.on('newMsg',function(msg)
 
 $('#msg-form').on('submit',function(e){
 	e.preventDefault();
-	
+	var msgBox=$('[name=msg]');
 	socket.emit('createMsg',{
 		from:"user",
-		text : $('[name=msg]').val()
+		text : msgBox.val()
+	},function(){
+		msgBox.val(' ');
 	})
 })
 
