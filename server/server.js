@@ -2,11 +2,11 @@ const path = require('path');
 const http =require('http');
 const express = require('express');
 const socketIO= require('socket.io');
-
+const {Users} = require('./user');
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
-
+var users = new Users();
 
 var publicPath=path.join(__dirname,'../public');
 const port = process.env.PORT || 3000;
@@ -27,13 +27,35 @@ var generateLocationMsg = (from,lat,lon)=>{
 	};
 }
 
+var isString= (str)=>{
+	return typeof str ==='string' && str.trim().length>0;
+};
 
 io.on('connection',function(socket){
-	console.log('connected to sever');
+	
+
+
+	socket.on('join',(params,callback)=>
+	{
+		if(!isString(params.name) || !isString(params.room)){
+			callback("name and room name are required");
+		} 
+	socket.join(params.room);
+	users.removeUser(socket.id);
+	users.addUser(socket.id,params.name,params.room);
+	io.to(params.room).emit('updatedUserList',users.getUserList(params.room));
+	socket.emit('newMsg',generateMsg('Admin','Welcome to chat app'));
+	socket.broadcast.to(params.room).emit('newMsg',generateMsg('Admin',params.name + "has joined"));
+	callback()
+	});
 
 socket.on('disconnect',function()
 {
-	console.log('user disconnected');
+	var user = users.removeUser(socket.id);
+	if(user){
+		io.to(user.room).emit('updatedUserList',users.getUserList(user.room));
+		io.to(user.room).emit('newMsg',generateMsg('Admin',user.name +"has left"));
+	}
 })
 
 socket.on('createMsg',(msg,callback)=>
@@ -48,26 +70,7 @@ socket.on('shareLocation',(obj)=>
 	console.log(a);
 
 	io.emit('newLocationMsg',generateLocationMsg("user",obj.lat,obj.lon));
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-});
-
+})});
 
 
 

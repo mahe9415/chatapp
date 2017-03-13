@@ -12,19 +12,34 @@ function scrollToBottom()
 	var lastMessageHeight = newMessage.prev().innerHeight();
 	 if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight)
 	{
-		console.log("scrolllllllllllllllllllll")
+		
 	message.scrollTop(scrollHeight);
 	  }
 }
 
 
 
-
-
 socket.on('connect',function(){
-	console.log('connected to server');
+
+var params= $.deparam(window.location.search);
+socket.emit('join',params,function(err){
+	if(err){
+		alert(err);
+		window.location.href="/";
+	}else{
+		
+	}
+});
 });
 
+socket.on('updatedUserList',function(users){
+	var ol=$('<ol></ol');
+	users.forEach(function(user){
+		ol.append($('<li></li>').text(user));
+	});
+	
+	$('#users').html(ol);}
+);
 
 socket.on('disconnect',function(){
 	console.log("disconnected!!!");
@@ -94,28 +109,5 @@ var src=$('#hbrLoc').html();
 	$('#msgstack').append(html);;
 	
 	scrollToBottom();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 })
