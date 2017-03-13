@@ -15,7 +15,9 @@ app.use(express.static(publicPath));
 
 var generateMsg =(from,text)=>
 {
-	return {from,text};
+	return {from,text,
+		createdAt : new Date().getTime()
+	};
 }
 var generateLocationMsg = (from,lat,lon)=>{
 	return {

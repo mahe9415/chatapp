@@ -3,6 +3,7 @@
 <head>
 	<title>Chat app</title>
 	<link rel="stylesheet" type="text/css" href="/css/chat.css">
+
 </head>
 <body class="chat">
 
@@ -14,6 +15,7 @@
 
 <div class="chat__main">
 <ol id="msgstack" class="chat__messages">
+
 </ol>
 
 <div class="chat__footer">
@@ -24,7 +26,38 @@
 <button id="sendLocation">send location</button>
 </div>
 </div>
+<script type="text/x-handlebars-template" id="hbr">
+<li calss="message">
+<div class="message__title">
+<h4>{{from}}</h4>
+	<span>{{createdAt}}</span>
+</div>
+<div calss="message__body">
+<p> {{text}} </p>
+</div>
+</li>
+</script>
+
+
+<script type="text/x-handlebars-template" id="hbrLoc">
+<li calss="message">
+<div class="message__title">
+<h4>{{from}}</h4>
+	<span>{{createdAt}}</span>
+</div>
+<div calss="message__body">
+<p> <a href="{{url}}" target="_blank">Mycurrent location</a>
+</div>
+</li>
+</script>
+
+
+
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/lib/jquery-3.1.1.min.js"></script>
+<script src="/js/lib/handlebar.js"></script>
 <script src="/js/index.js"></script>
+<script src="/js/lib/moment.js"></script>
+
 </html>
