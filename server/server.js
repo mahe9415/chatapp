@@ -36,8 +36,9 @@ io.on('connection',function(socket){
 
 
 	socket.on('join',(params,callback)=>
-	{
+	{	
 		if(!isString(params.name) || !isString(params.room)){
+
 			callback("name and room name are required");
 		} 
 	socket.join(params.room);
@@ -59,17 +60,21 @@ socket.on('disconnect',function()
 })
 
 socket.on('createMsg',(msg,callback)=>
-{
-    io.emit('newMsg',msg);
+{	var user= users.getUser(socket.id);
+
+	if(user && isString(msg.text)){
+	io.to(user.room).emit('newMsg',generateMsg(user.name,msg.text));	
+	}
+    
     callback()
 });
 
 socket.on('shareLocation',(obj)=>
 {
 	var a= generateLocationMsg("user",obj.lat,obj.lon);
-	console.log(a);
-
-	io.emit('newLocationMsg',generateLocationMsg("user",obj.lat,obj.lon));
+	
+	var user=users.getUser(socket.id);
+	io.to(user.room).emit('newLocationMsg',generateLocationMsg(user.name,obj.lat,obj.lon));
 })});
 
 
