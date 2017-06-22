@@ -1,17 +1,24 @@
 const path = require('path');
 const http =require('http');
+const mongoose = require('mongoose');
 const express = require('express');
 const socketIO= require('socket.io');
 const {Users} = require('./user');
+const Camp = require('./camp.js')
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 var users = new Users();
 
 var publicPath=path.join(__dirname,'../public');
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 7000;
 app.use(express.static(publicPath));
- 
+ // Connect to our Database and handle an bad connections
+mongoose.connect('mongodb://mahe:123@ds135592.mlab.com:35592/shoutout');
+mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
+mongoose.connection.on('error', (err) => {
+  console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
+});
 
 var generateMsg =(from,text)=>
 {
@@ -78,7 +85,17 @@ socket.on('shareLocation',(obj)=>
 })});
 
 app.get('/json', function (req, res) {
-  res.json('GET request to the homepage')
+  const obj = new Camp({
+  	email:"maheshv9415@gmail.com",
+  	name:"mahesh"
+  })
+  obj.save()
+})
+app.get('/bubbly',(req,res)=>{
+	const camps=Camp.find({}).then((doc)=>{
+		res.json(doc);
+		res.end();
+	})
 })
 
 server.listen(port);
