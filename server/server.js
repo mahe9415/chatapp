@@ -77,6 +77,8 @@ socket.on('shareLocation',(obj)=>
 	io.to(user.room).emit('newLocationMsg',generateLocationMsg(user.name,obj.lat,obj.lon));
 })});
 
-
+app.get('/json', function (req, res) {
+  res.json('GET request to the homepage')
+})
 
 server.listen(port);
