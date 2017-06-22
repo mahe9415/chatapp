@@ -31,10 +31,14 @@ var isString= (str)=>{
 	return typeof str ==='string' && str.trim().length>0;
 };
 
+
+app.get('/json', function (req, res) {
+  res.send('GET request to the homepage')
+})
+
+
 io.on('connection',function(socket){
 	
-
-
 	socket.on('join',(params,callback)=>
 	{	
 		if(!isString(params.name) || !isString(params.room)){
@@ -71,7 +75,7 @@ socket.on('createMsg',(msg,callback)=>
 
 socket.on('shareLocation',(obj)=>
 {
-	var a= generateLocationMsg("user",obj.lat,obj.lon);
+	
 	
 	var user=users.getUser(socket.id);
 	io.to(user.room).emit('newLocationMsg',generateLocationMsg(user.name,obj.lat,obj.lon));
