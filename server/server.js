@@ -32,9 +32,6 @@ var isString= (str)=>{
 };
 
 
-app.get('/json', function (req, res) {
-  res.send('GET request to the homepage')
-})
 
 
 io.on('connection',function(socket){
@@ -83,4 +80,7 @@ socket.on('shareLocation',(obj)=>
 
 
 
+app.get('/json', function (req, res) {
+  res.send('GET request to the homepage')
+})
 server.listen(port);
