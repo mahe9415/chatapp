@@ -24,7 +24,8 @@ mongoose.connection.on('error', (err) => {
 
 
 
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 var generateMsg =(from,text)=>
 {
@@ -104,14 +105,19 @@ socket.on('shareLocation',(obj)=>
 // }
 // const upload = multer(multerOptions).single('photo');
 
-app.post('/camp',(req, res)=>{
-res.json(req.body)
-  // const obj = new Camp({req.body})
-  //    obj.save()
+app.post('/camp',(req,res)=>{
+  const obj = new Camp(req.body)
+ obj.save()
+ .then((doc)=>{res.json({"status":true,"message":"saved"})})
+ .catch((err)=>{
+ 	res.json({"status":false,"message":"failed"})
+ })
 })
-app.get('/bubbly',(req,res)=>{
+
+app.get('/get_camps',(req,res)=>{
+	console.log("sbhnj")
 	const camps=Camp.find({}).then((doc)=>{
-		res.json(doc);
+		res.json(doc)
 		res.end();
 	})
 })
