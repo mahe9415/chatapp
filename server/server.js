@@ -107,17 +107,28 @@ socket.on('shareLocation',(obj)=>
 
 app.post('/camp',(req,res)=>{
 	// const k=JSON.stringify(req.body)
-	console.log(req.body)
-const k=req.body
  const obj = new Camp(req.body)
  obj.save()
  .then((doc)=>{res.json({"status":true,"message":"saved","data":k})})
  .catch((err)=>{
- 	console.log(err)
+ 	
  	res.json({"status":false,"message":"failed","error":err,"req":req})
  })
 })
 
+app.get('/:id',(req,res)=>{
+const camp_id=req.params.id
+const camp=Camp.find({camp_id}).then((doc)=>{
+console.log(doc.length)
+if(!doc.length){
+	res.json({"status":false,"message":"wrong id"});
+	return;
+}
+res.send(doc)
+}).catch((err)=>{
+	res.json({"status":false})
+})
+})
 app.get('/get_camps',(req,res)=>{
 	const camps=Camp.find({}).then((doc)=>{
 		res.json(doc)
