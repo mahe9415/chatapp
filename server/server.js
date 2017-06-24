@@ -113,7 +113,9 @@ app.post('/camp',(req,res)=>{
  	res.json({"status":false,"message":"failed"})
  })
 })
-
+app.get('/favicon.ico',(req,res)=>{
+	res.json({"ccol":"sasa"})
+})
 app.get('/get_camps',(req,res)=>{
 	console.log("sbhnj")
 	const camps=Camp.find({}).then((doc)=>{
