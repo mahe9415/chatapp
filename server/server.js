@@ -116,7 +116,7 @@ app.post('/camp',(req,res)=>{
  })
 })
 
-app.get('/:id',(req,res)=>{
+app.get('camp/:id',(req,res)=>{
 const camp_id=req.params.id
 const camp=Camp.find({camp_id}).then((doc)=>{
 console.log(doc.length)
@@ -129,12 +129,19 @@ res.send(doc)
 	res.json({"status":false})
 })
 })
+
+
+
 app.get('/get_camps',(req,res)=>{
-	const camps=Camp.find({}).then((doc)=>{
+	const camp=Camp.find({}).then((doc)=>{
 		res.json(doc)
 		res.end();
 	})
 })
+
+
+
+
 app.post('/count/:id',(req,res)=> {
 	const camp_id=req.params.id
 	Camp.findOneAndUpdate({camp_id},{ $inc: {count:1}}).then((doc)=>{
