@@ -104,9 +104,8 @@ const multerOptions ={
 }
 const upload = multer(multerOptions).single('photo');
 
-app.post('/camp',(req, res)=>{
-  const obj = new Camp({
-  })
+app.post('/camp',upload,(req, res)=>{
+  const obj = new Camp({req.body})
   obj.save()
 	res.json(req.body)
 })
