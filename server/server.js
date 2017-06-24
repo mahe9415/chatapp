@@ -116,7 +116,7 @@ app.post('/camp',(req,res)=>{
  })
 })
 
-app.get('camp/:id',(req,res)=>{
+app.get('/camp/:id',(req,res)=>{
 const camp_id=req.params.id
 const camp=Camp.find({camp_id}).then((doc)=>{
 console.log(doc.length)
