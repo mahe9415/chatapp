@@ -109,7 +109,9 @@ app.post('/camp',(req,res)=>{
 	// const k=JSON.stringify(req.body)
  const obj = new Camp(req.body)
  obj.save()
- .then((doc)=>{res.json({"status":true,"message":"saved","data":k})})
+ .then((doc)=>{
+ 	res.json({"status":true,"message":"saved"})
+ })
  .catch((err)=>{
  	
  	res.json({"status":false,"message":"failed","error":err,"req":req})
