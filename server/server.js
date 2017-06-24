@@ -5,7 +5,9 @@ const express = require('express');
 const socketIO= require('socket.io');
 const {Users} = require('./user');
 const Camp = require('./camp.js')
+const multer=require('multer')
 var app = express();
+var bodyParser = require('body-parser')
 var server = http.createServer(app);
 var io = socketIO(server);
 var users = new Users();
@@ -19,6 +21,10 @@ mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 mongoose.connection.on('error', (err) => {
   console.error(`🙅 🚫 🙅 🚫 🙅 🚫 🙅 🚫 → ${err.message}`);
 });
+
+
+
+app.use(bodyParser.urlencoded({ extended: false }))
 
 var generateMsg =(from,text)=>
 {
@@ -84,12 +90,25 @@ socket.on('shareLocation',(obj)=>
 	io.to(user.room).emit('newLocationMsg',generateLocationMsg(user.name,obj.lat,obj.lon));
 })});
 
-app.get('/json', function (req, res) {
+const multerOptions ={
+	storage:multer.memoryStorage(),
+	fileFilter(req,file,next){
+		const isPhoto = file.mimetype.startsWith('image/');
+		if(isPhoto){
+			next(null,true);
+		}
+		else{
+			next({message:'That filetype is not allowed'},false);
+		}
+	}
+}
+const upload = multer(multerOptions).single('photo');
+
+app.post('/camp',(req, res)=>{
   const obj = new Camp({
-  	email:"maheshv9415@gmail.com",
-  	name:"mahesh"
   })
   obj.save()
+	res.json(req.body)
 })
 app.get('/bubbly',(req,res)=>{
 	const camps=Camp.find({}).then((doc)=>{
