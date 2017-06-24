@@ -24,7 +24,7 @@ mongoose.connection.on('error', (err) => {
 
 
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var generateMsg =(from,text)=>
@@ -106,22 +106,31 @@ socket.on('shareLocation',(obj)=>
 // const upload = multer(multerOptions).single('photo');
 
 app.post('/camp',(req,res)=>{
-  const obj = new Camp(req.body)
+	// const k=JSON.stringify(req.body)
+	console.log(req.body)
+const k=req.body
+ const obj = new Camp(req.body)
  obj.save()
- .then((doc)=>{res.json({"status":true,"message":"saved"})})
+ .then((doc)=>{res.json({"status":true,"message":"saved","data":k})})
  .catch((err)=>{
- 	res.json({"status":false,"message":"failed"})
+ 	console.log(err)
+ 	res.json({"status":false,"message":"failed","error":err,"req":req})
  })
 })
-app.get('/favicon.ico',(req,res)=>{
-	res.json({"ccol":"sasa"})
-})
+
 app.get('/get_camps',(req,res)=>{
-	console.log("sbhnj")
 	const camps=Camp.find({}).then((doc)=>{
 		res.json(doc)
 		res.end();
 	})
 })
-
+app.post('/count/:id',(req,res)=> {
+	const camp_id=req.params.id
+	Camp.findOneAndUpdate({camp_id},{ $inc: {count:1}}).then((doc)=>{
+		res.json({"status":true})
+	})
+	.catch((err)=>{
+		res.json({"error":err})
+	})
+})
 server.listen(port);
