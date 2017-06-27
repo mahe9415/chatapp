@@ -2,11 +2,13 @@ const path = require('path');
 const http =require('http');
 const mongoose = require('mongoose');
 const express = require('express');
+const cors = require('cors')
 const socketIO= require('socket.io');
 const {Users} = require('./user');
 const Camp = require('./camp.js')
 // const multer=require('multer')
 var app = express();
+app.use(cors());
 var bodyParser = require('body-parser')
 var server = http.createServer(app);
 var io = socketIO(server);
